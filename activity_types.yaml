@@ -16,6 +16,8 @@ on:
       - main
       - 'dev-*' 
       - 'feat/**' # the double ** allows for more asterisk
+    path-ignore:
+      - '.github/workflows/*'
 jobs:
   test:
     runs-on: ubuntu-latest
