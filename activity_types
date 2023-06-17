@@ -6,7 +6,16 @@ on:
     types:
       - opened
       - edited
+    branches: 
+    - main
+    - 'dev-*' 
+    - 'feat/**' # the double ** allows for more asterisk
   workflow_dispatch:
+  push:
+    branches: 
+      - main
+      - 'dev-*' 
+      - 'feat/**' # the double ** allows for more asterisk
 jobs:
   test:
     runs-on: ubuntu-latest
