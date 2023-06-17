@@ -14,6 +14,14 @@ jobs:
         run: npm ci 
       - name: Run test
         run:  npm test
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-files
+          # path: dist
+          path: |
+            dist
+            package.json
     deploy:
       needs: test
       # needs: [job1, job2 job3]
@@ -29,13 +37,10 @@ jobs:
         run: npm ci 
       - name: Build project
         run: npm run build
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+      - name: Get build artifacts
+        uses: actions/download-artifact@v3
         with:
           name: dist-files
-          # path: dist
-          path: |
-            dist
-            package.json
+        
       - name: Deploy app
         run: echo "deploying....."
