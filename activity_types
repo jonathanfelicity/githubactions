@@ -1,0 +1,40 @@
+name: Event Activity Type
+on:
+  pull_request:
+    # types: [opened, edited]
+    # types: opened
+    types:
+      - opened
+      - edited
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Install NodeJS
+        uses: actions/setup-node@v3 
+        with:
+          node-version: 18  
+      - name: Install dependencies
+        run: npm ci 
+      - name: Run test
+        run:  npm test
+    deploy:
+      needs: test
+      # needs: [job1, job2 job3]
+      runs-on: ubuntu-latest
+      steps:
+      - name: Get code
+        uses: action/checkout@v3
+      - name: Install NodeJS
+        uses: actions/setup-node@v3 
+        with:
+          node-version: 18  
+      - name: Install dependencies
+        run: npm ci 
+      - name: Build project
+        run: npm run build
+      - name: Deploy app
+        run: echo "deploying....."
