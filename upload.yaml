@@ -3,6 +3,9 @@ on: [push, workflow_dispatch]
 jobs:
   test:
     runs-on: ubuntu-latest
+    outputs: 
+      script-file: ${{ steps.publish.outputs.script-file }}
+
     steps:
       - name: Get code
         uses: actions/checkout@v3
@@ -14,6 +17,9 @@ jobs:
         run: npm ci 
       - name: Run test
         run:  npm test
+      - name: Publish filename
+        id: publish
+        run:  find dist/asset/*.js -type f -execdir echo '::set-output name=script-file::{}' ';'
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -41,6 +47,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: dist-files
-        
+      - name: Output filename:
+        run: echo "${{ needs.test.outputs.script-file }}"  
       - name: Deploy app
         run: echo "deploying....."
